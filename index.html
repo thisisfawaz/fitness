@@ -1,23 +1,653 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta http-equiv="refresh" content="0; url=gym-fit.html">
-    <title>Loading Fitness Site...</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>PULSE | Elite Fitness & Performance Lab</title>
     <style>
-        /* This makes the "waiting" screen look cleaner */
-        body { 
-            background-color: #101010; /* Change this to match your site's color */
+        /* ---------- RESET & VARIABLES ---------- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --neon-green: #ccff00;
+            --electric-purple: #8b5cf6;
+            --deep-black: #050505;
+            --card-bg: #111111;
+            --text-white: #ffffff;
+            --text-gray: #b0b0b8;
+            --text-muted: #6c6c7a;
+            --border-dim: #222222;
+            --gradient-primary: linear-gradient(135deg, #ccff00 0%, #8b5cf6 100%);
+            --gradient-dark: linear-gradient(145deg, #0a0a0a 0%, #121212 100%);
+            --shadow-glow: 0 20px 35px -12px rgba(0,0,0,0.5);
+            --transition-smooth: all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+        }
+
+        body {
+            background-color: var(--deep-black);
+            color: var(--text-white);
+            font-family: 'Outfit', sans-serif;
+            line-height: 1.5;
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        /* Typography */
+        h1, h2, h3, h4 {
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            line-height: 1.2;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-header h2 {
+            font-size: 2.8rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+
+        .section-header p {
+            font-size: 1.2rem;
+            color: var(--text-gray);
+            max-width: 650px;
+            margin: 0 auto;
+        }
+
+        /* Navbar Premium */
+        nav {
             display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 5%;
+            position: absolute;
+            width: 100%;
+            z-index: 200;
+            backdrop-filter: blur(10px);
+            background: rgba(5,5,5,0.6);
+            border-bottom: 1px solid rgba(204,255,0,0.1);
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 900;
+            letter-spacing: -1px;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-white);
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -6px;
+            left: 0;
+            width: 0%;
+            height: 2px;
+            background: var(--neon-green);
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-links a:hover {
+            color: var(--neon-green);
+        }
+
+        /* Hero Section - Bold & Professional */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            margin: 0;
-            font-family: sans-serif;
+            text-align: center;
+            background: linear-gradient(125deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.7) 100%), 
+                        url('https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?q=80&w=2069&auto=format&fit=crop') center/cover no-repeat;
+            padding: 0 8%;
+            position: relative;
         }
-        .hidden { display: none; }
+
+        .hero-badge {
+            background: rgba(204,255,0,0.12);
+            backdrop-filter: blur(4px);
+            padding: 0.5rem 1.5rem;
+            border-radius: 100px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--neon-green);
+            margin-bottom: 1.5rem;
+            letter-spacing: 1px;
+            border: 1px solid rgba(204,255,0,0.3);
+        }
+
+        .hero h1 {
+            font-size: clamp(3.2rem, 8vw, 6rem);
+            font-weight: 900;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: -0.02em;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text-gray);
+            max-width: 680px;
+            margin-bottom: 2.5rem;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 1rem 2.4rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            text-decoration: none;
+            border-radius: 50px;
+            transition: var(--transition-smooth);
+            display: inline-block;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-neon {
+            background: var(--neon-green);
+            color: var(--deep-black);
+            box-shadow: 0 0 15px rgba(204, 255, 0, 0.5);
+        }
+
+        .btn-neon:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 28px rgba(204, 255, 0, 0.7);
+            background: #d4ff33;
+        }
+
+        .btn-outline {
+            border: 1.5px solid var(--text-white);
+            background: transparent;
+            color: white;
+        }
+
+        .btn-outline:hover {
+            border-color: var(--neon-green);
+            color: var(--neon-green);
+            transform: translateY(-3px);
+        }
+
+        /* Stats Section Premium */
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 2rem;
+            padding: 4rem 8%;
+            background: var(--gradient-dark);
+            border-bottom: 1px solid var(--border-dim);
+            border-top: 1px solid var(--border-dim);
+        }
+
+        .stat-item {
+            text-align: center;
+            min-width: 140px;
+        }
+
+        .stat-item h4 {
+            font-size: 3rem;
+            font-weight: 800;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .stat-item p {
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--text-gray);
+            margin-top: 0.3rem;
+        }
+
+        /* Classes Grid */
+        .classes {
+            padding: 7rem 5%;
+            background: var(--deep-black);
+        }
+
+        .class-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .class-card {
+            background: var(--card-bg);
+            border-radius: 28px;
+            overflow: hidden;
+            border: 1px solid #222;
+            transition: var(--transition-smooth);
+            backdrop-filter: blur(2px);
+        }
+
+        .class-card:hover {
+            border-color: var(--electric-purple);
+            transform: translateY(-8px);
+            box-shadow: 0 25px 40px -20px rgba(139, 92, 246, 0.4);
+        }
+
+        .class-img {
+            height: 260px;
+            background-size: cover;
+            background-position: center;
+            transition: transform 0.6s ease;
+        }
+
+        .class-card:hover .class-img {
+            transform: scale(1.02);
+        }
+
+        .class-info {
+            padding: 2rem;
+        }
+
+        .class-info h3 {
+            font-size: 1.8rem;
+            margin-bottom: 0.75rem;
+            color: var(--neon-green);
+        }
+
+        .class-meta {
+            display: flex;
+            gap: 1rem;
+            margin: 1rem 0;
+            font-size: 0.8rem;
+            color: var(--electric-purple);
+            font-weight: 600;
+        }
+
+        /* Trainers Section (NEW) */
+        .trainers {
+            padding: 6rem 5%;
+            background: linear-gradient(180deg, #0a0a0a 0%, #030303 100%);
+        }
+
+        .trainer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 2rem;
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        .trainer-card {
+            background: #0f0f0f;
+            border-radius: 24px;
+            padding: 2rem 1.5rem;
+            text-align: center;
+            border: 1px solid #292929;
+            transition: all 0.3s;
+        }
+
+        .trainer-card:hover {
+            border-color: var(--neon-green);
+            background: #141414;
+        }
+
+        .trainer-img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 1.5rem;
+            border: 2px solid var(--electric-purple);
+            padding: 3px;
+            background: var(--gradient-primary);
+        }
+
+        .trainer-card h4 {
+            font-size: 1.5rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .trainer-title {
+            color: var(--neon-green);
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        /* Membership Section */
+        .membership {
+            padding: 6rem 5%;
+            background: #050505;
+        }
+
+        .pricing-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .pricing-card {
+            background: #111;
+            border-radius: 32px;
+            padding: 2.5rem 2rem;
+            flex: 1;
+            min-width: 280px;
+            border: 1px solid #2a2a2a;
+            transition: transform 0.3s;
+            text-align: center;
+        }
+
+        .pricing-card.featured {
+            border: 1px solid var(--neon-green);
+            box-shadow: 0 0 30px rgba(204,255,0,0.1);
+            transform: scale(1.02);
+        }
+
+        .pricing-card h3 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .price {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--neon-green);
+            margin: 1.5rem 0;
+        }
+
+        .price span {
+            font-size: 1rem;
+            color: var(--text-gray);
+        }
+
+        .feature-list {
+            list-style: none;
+            margin: 2rem 0;
+        }
+
+        .feature-list li {
+            padding: 0.6rem 0;
+            border-bottom: 1px solid #222;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-small {
+            padding: 0.8rem 1.8rem;
+            background: transparent;
+            border: 1px solid var(--neon-green);
+            color: var(--neon-green);
+            border-radius: 40px;
+            font-weight: 700;
+            transition: 0.2s;
+            cursor: pointer;
+            display: inline-block;
+            text-decoration: none;
+        }
+
+        .btn-small:hover {
+            background: var(--neon-green);
+            color: black;
+        }
+
+        /* Testimonial Section */
+        .testimonials {
+            padding: 6rem 5%;
+            background: #0c0c0c;
+        }
+
+        .testimonial-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            justify-content: center;
+        }
+
+        .testimonial-card {
+            background: #101010;
+            padding: 2rem;
+            border-radius: 24px;
+            max-width: 380px;
+            border-left: 4px solid var(--neon-green);
+        }
+
+        .testimonial-card p {
+            font-style: italic;
+            color: #cdcddd;
+        }
+
+        .client-name {
+            margin-top: 1.2rem;
+            font-weight: 700;
+            color: var(--neon-green);
+        }
+
+        /* CTA Section - PRODUCT FOCUS */
+        .cta-section {
+            padding: 5rem 5%;
+            text-align: center;
+            background: var(--gradient-dark);
+            border-top: 1px solid #222;
+            border-bottom: 1px solid #222;
+        }
+
+        .cta-section h2 {
+            font-size: 2.6rem;
+            margin-bottom: 1rem;
+        }
+
+        .product-highlight {
+            background: rgba(204, 255, 0, 0.05);
+            max-width: 800px;
+            margin: 2rem auto 0;
+            padding: 1.5rem;
+            border-radius: 32px;
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(204,255,0,0.2);
+        }
+
+        .btn-product {
+            background: var(--neon-green);
+            color: #000;
+            font-weight: 800;
+            padding: 1.2rem 2.8rem;
+            font-size: 1.2rem;
+            box-shadow: 0 0 25px rgba(204,255,0,0.6);
+            transition: 0.2s;
+        }
+
+        .btn-product:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 40px #ccff00;
+        }
+
+        /* Footer */
+        footer {
+            padding: 3rem 5%;
+            text-align: center;
+            background: #020202;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 1.5rem 0;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: var(--text-gray);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover {
+            color: var(--neon-green);
+        }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .hero h1 { font-size: 3rem; }
+            .section-header h2 { font-size: 2rem; }
+            .btn-group { flex-direction: column; align-items: center; }
+            .btn-product { font-size: 1rem; padding: 1rem 1.8rem; }
+        }
     </style>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 </head>
 <body>
-    <p class="hidden">Redirecting to <a href="gym-fit.html">Fitness Page</a>...</p>
-</body>
-</html>
+
+<nav>
+    <div class="logo">PULSE.</div>
+    <ul class="nav-links">
+        <li><a href="#">Trainers</a></li>
+        <li><a href="#">Classes</a></li>
+        <li><a href="#">Membership</a></li>
+        <li><a href="#">Contact</a></li>
+    </ul>
+</nav>
+
+<section class="hero">
+    <div class="hero-badge">EST. 2024 • ELITE PERFORMANCE HUB</div>
+    <h1>IGNITE YOUR<br>LIMITS</h1>
+    <p>Where science meets intensity — world-class coaching, bio-adaptive training, and a culture of champions. Your next evolution starts here.</p>
+    <div class="btn-group">
+        <!-- PRIMARY CTA: GET THE PRODUCT (top placement) -->
+        <a href="https://arturparfenenko.gumroad.com/l/dbgakq" target="_blank" rel="noopener noreferrer" class="btn btn-neon" style="background: #ccff00; color:#050505; font-weight: 900;">⚡ GET THE PRODUCT →</a>
+        <a href="#" class="btn btn-outline">Explore memberships</a>
+    </div>
+</section>
+
+<div class="stats">
+    <div class="stat-item"><h4>850+</h4><p>Active members</p></div>
+    <div class="stat-item"><h4>18</h4><p>Elite coaches</p></div>
+    <div class="stat-item"><h4>24/7</h4><p>Keycard access</p></div>
+    <div class="stat-item"><h4>40+</h4><p>Weekly classes</p></div>
+</div>
+
+<section class="classes">
+    <div class="section-header">
+        <h2>Signature Sessions</h2>
+        <p>Engineered for results — from explosive HIIT to precision strength. Every class is a catalyst.</p>
+    </div>
+    <div class="class-grid">
+        <div class="class-card">
+            <div class="class-img" style="background-image: url('https://images.unsplash.com/photo-1599058917212-d750089bc07e?q=80&w=2069&auto=format&fit=crop');"></div>
+            <div class="class-info">
+                <h3>METABOLIC HIIT</h3>
+                <div class="class-meta">🔥 45min | 🔥 700+ kcal avg</div>
+                <p>High-intensity intervals with recovery science. Maximize EPOC and shred body fat while preserving lean mass.</p>
+            </div>
+        </div>
+        <div class="class-card">
+            <div class="class-img" style="background-image: url('https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?q=80&w=2070&auto=format&fit=crop');"></div>
+            <div class="class-info">
+                <h3>IRON LEGACY</h3>
+                <div class="class-meta">🏋️ 60min | Strength Focus</div>
+                <p>Powerlifting & periodized strength — squat, bench, deadlift under expert supervision. Build raw, functional power.</p>
+            </div>
+        </div>
+        <div class="class-card">
+            <div class="class-img" style="background-image: url('https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?q=80&w=2070&auto=format&fit=crop');"></div>
+            <div class="class-info">
+                <h3>STRIKE LAB</h3>
+                <div class="class-meta">🥊 50min | Boxing + Core</div>
+                <p>Combining combat conditioning with reactive agility drills. Unleash endurance, speed, and chiseled midsection.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="trainers">
+    <div class="section-header">
+        <h2>Elite Coaching Staff</h2>
+        <p>World-class trainers with competition backgrounds & kinesiology expertise.</p>
+    </div>
+    <div class="trainer-grid">
+        <div class="trainer-card">
+            <img class="trainer-img" src="https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?q=80&w=1974&auto=format&fit=crop" alt="trainer">
+            <h4>Marcus Vega</h4>
+            <div class="trainer-title">Head of Performance</div>
+            <p>Former national-level powerlifter, NSCA-CPT. Specializes in athletic development.</p>
+        </div>
+        <div class="trainer-card">
+            <img class="trainer-img" src="https://images.unsplash.com/photo-1594381898411-846e7d193883?q=80&w=1974&auto=format&fit=crop" alt="trainer">
+            <h4>Elena Cruz</h4>
+            <div class="trainer-title">HIIT & Conditioning</div>
+            <p>CrossFit Games competitor, metabolic conditioning expert. 10+ years coaching.</p>
+        </div>
+        <div class="trainer-card">
+            <img class="trainer-img" src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?q=80&w=2070&auto=format&fit=crop" alt="trainer">
+            <h4>David Okafor</h4>
+            <div class="trainer-title">Combat Sports Lead</div>
+            <p>Former pro boxer, boxing science & mobility specialist.</p>
+        </div>
+        <div class="trainer-card">
+            <img class="trainer-img" src="https://images.unsplash.com/photo-1623171916712-4f3ec1d37c02?q=80&w=2070&auto=format&fit=crop" alt="trainer">
+            <h4>Sophia Lind</h4>
+            <div class="trainer-title">Recovery & Mobility</div>
+            <p>Corrective exercise specialist, yoga & breathwork integration.</p>
+        </div>
+    </div>
+</section>
+
+<section class="membership">
+    <div class="section-header">
+        <h2>Membership tiers</h2>
+        <p>Flexible plans designed for every goal — from drop-in to unlimited premium.</p>
+    </div>
+    <div class="pricing-grid">
+        <div class="pricing-card">
+            <h3>IGNITE</h3>
+            <div class="price">$59<span>/month</span></div>
